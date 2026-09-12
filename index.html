@@ -641,6 +641,19 @@
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; min-height: auto; }
     .hero-left { padding: 60px 32px; min-height: 60vh; }
+    .hero-left::before {
+      font-size: 34vw;
+      top: -5vw;
+      left: -2vw;
+      letter-spacing: -2vw;
+    }
+    .hero-name {
+      font-size: clamp(28px, 9vw, 48px);
+      letter-spacing: -0.5px;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .hero-title { font-size: 18px; }
     .hero-right { padding: 48px 32px; }
     .exp-item { grid-template-columns: 1fr; gap: 16px; }
     .skills-grid { grid-template-columns: 1fr 1fr; }
