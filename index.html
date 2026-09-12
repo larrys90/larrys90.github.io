@@ -3,784 +3,400 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Larry Sepulveda — Systems Administrator | IAM &amp; Cloud Security</title>
+<title>Larry Sepulveda — Systems Administrator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0d0d0d;
-    --paper: #f5f0e8;
-    --steel: #1a2744;
-    --accent: #c8451a;
-    --muted: #7a7166;
-    --rule: rgba(13,13,13,0.12);
+    --paper: #f4ede1;
+    --paper-dim: #ece2d0;
+    --ink: #1a2332;
+    --ink-soft: #2d3748;
+    --rust: #b8533a;
+    --rust-dark: #8b3d2a;
+    --slate: #6b6357;
+    --mist: #9a8f7d;
+    --hairline: rgba(26, 35, 50, 0.14);
   }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
+    font-family: 'Fraunces', Georgia, serif;
     background: var(--paper);
-    color: var(--ink);
+    color: var(--ink-soft);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(184, 83, 58, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(26, 35, 50, 0.04) 0%, transparent 40%);
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+
+  .label {
     font-family: 'DM Mono', monospace;
-    font-weight: 300;
-    overflow-x: hidden;
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    color: var(--rust);
   }
 
-  /* ---- NOISE TEXTURE OVERLAY ---- */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
-    opacity: 0.5;
-  }
-
-  /* ---- HERO ---- */
+  /* ===== HERO ===== */
   .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    border-bottom: 1px solid var(--rule);
-    overflow: hidden;
-  }
-
-  .hero-left {
-    background: var(--steel);
-    padding: 80px 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 0 60px;
     position: relative;
     overflow: hidden;
   }
-
-  .hero-left::before {
-    content: 'SYS';
-    position: absolute;
-    top: -60px;
-    left: -20px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 280px;
-    color: rgba(255,255,255,0.04);
-    letter-spacing: -20px;
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .hero-left::after {
+  .hero::after {
     content: '';
     position: absolute;
-    bottom: 0; right: 0;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle at center, rgba(200,69,26,0.25) 0%, transparent 70%);
+    bottom: -2px; left: 0; right: 0;
+    height: 5px;
+    background: var(--rust);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 320px; height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(184,83,58,0.18) 55%, transparent 100%);
     pointer-events: none;
   }
-
-  .eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.2s;
-  }
-
-  .hero-name {
+  .hero-inner { position: relative; z-index: 1; }
+  .hero .label { color: #d99a86; margin-bottom: 18px; display: block; }
+  .hero h1 {
     font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(52px, 7vw, 88px);
-    color: #fff;
-    line-height: 0.95;
-    letter-spacing: -2px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.4s;
+    font-weight: 700;
+    font-size: clamp(38px, 6vw, 58px);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin-bottom: 14px;
   }
-
-  .hero-name span {
-    display: block;
-    color: var(--accent);
-  }
-
-  .hero-title {
+  .hero .role {
     font-family: 'Fraunces', serif;
     font-style: italic;
-    font-weight: 300;
-    font-size: 22px;
-    color: rgba(255,255,255,0.55);
-    margin-top: 20px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.6s;
-  }
-
-  .hero-contact {
-    margin-top: 56px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.8s;
-  }
-
-  .hero-contact a {
-    color: rgba(255,255,255,0.6);
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: color 0.2s;
-  }
-
-  .hero-contact a::before {
-    content: '→';
-    color: var(--accent);
-    font-size: 14px;
-  }
-
-  .hero-contact a:hover { color: #fff; }
-
-  .hero-right {
-    padding: 80px 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: var(--paper);
-    position: relative;
-  }
-
-  .hero-right::before {
-    content: '';
-    position: absolute;
-    top: 40px; right: 40px;
-    width: 160px; height: 160px;
-    border: 1px solid var(--rule);
-    border-radius: 50%;
-    animation: spin 30s linear infinite;
-  }
-
-  .hero-right::after {
-    content: '';
-    position: absolute;
-    top: 55px; right: 55px;
-    width: 130px; height: 130px;
-    border: 1px dashed var(--rule);
-    border-radius: 50%;
-    animation: spin 20s linear infinite reverse;
-  }
-
-  .summary-label {
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.5s;
-  }
-
-  .summary-text {
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: clamp(17px, 2vw, 20px);
-    line-height: 1.7;
-    color: var(--ink);
-    max-width: 480px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.7s;
-  }
-
-  .location-tag {
-    margin-top: 40px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.9s;
-  }
-
-  .location-tag::before {
-    content: '◉';
-    color: var(--accent);
-    font-size: 10px;
-  }
-
-  /* ---- SKILLS TICKER ---- */
-  .ticker-wrap {
-    background: var(--accent);
-    padding: 14px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    border-top: none;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-  }
-
-  .ticker-track {
-    display: inline-flex;
-    animation: ticker 25s linear infinite;
-  }
-
-  .ticker-item {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #fff;
-    padding: 0 32px;
-  }
-
-  .ticker-item::after {
-    content: '✦';
-    margin-left: 32px;
-    opacity: 0.5;
-  }
-
-  /* ---- SECTIONS ---- */
-  .section {
-    padding: 100px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-left: 60px;
-    padding-right: 60px;
-  }
-
-  .section-header {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 64px;
-  }
-
-  .section-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-  }
-
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(32px, 4vw, 52px);
-    letter-spacing: -1.5px;
-    color: var(--ink);
-    line-height: 1;
-  }
-
-  .section-line {
-    grid-column: 2;
-    height: 1px;
-    background: var(--rule);
-    margin-top: -8px;
-  }
-
-  /* ---- EXPERIENCE ---- */
-  .exp-section { border-top: 1px solid var(--rule); }
-
-  .exp-item {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 48px;
-    padding: 56px 0;
-    border-bottom: 1px solid var(--rule);
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .exp-item.visible { opacity: 1; transform: translateY(0); }
-
-  .exp-meta {
-    padding-top: 4px;
-  }
-
-  .exp-company {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--steel);
-  }
-
-  .exp-period {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 6px;
-    letter-spacing: 0.05em;
-  }
-
-  .exp-role {
-    font-family: 'Fraunces', serif;
     font-weight: 400;
-    font-size: 24px;
-    color: var(--ink);
-    margin-bottom: 20px;
-    line-height: 1.2;
+    font-size: 20px;
+    color: var(--paper-dim);
+    margin-bottom: 26px;
   }
-
-  .exp-bullets {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .hero p.summary {
+    max-width: 62ch;
+    font-size: 16px;
+    color: #cfc6b8;
+    margin-bottom: 30px;
   }
-
-  .exp-bullets li {
+  .hero-links { display: flex; gap: 22px; flex-wrap: wrap; }
+  .hero-links a {
+    font-family: 'DM Mono', monospace;
     font-size: 13px;
-    line-height: 1.6;
-    color: #3a3530;
-    padding-left: 18px;
-    position: relative;
+    color: var(--paper);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rust);
+    padding-bottom: 3px;
+    transition: color 0.2s, border-color 0.2s;
   }
+  .hero-links a:hover { color: var(--rust); }
 
-  .exp-bullets li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: 12px;
+  /* ===== SECTION SHELL ===== */
+  section { padding: 56px 0; border-bottom: 1px solid var(--hairline); }
+  section:last-of-type { border-bottom: none; }
+
+  h2.section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--ink);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
   }
+  h2.section-title .label { font-size: 13px; }
 
-  /* ---- SKILLS GRID ---- */
-  .skills-bg {
-    background: var(--steel);
-    padding: 100px 0;
-  }
-
-  .skills-bg .section { padding-top: 0; padding-bottom: 0; }
-  .skills-bg .section-title { color: #fff; }
-  .skills-bg .section-num { color: var(--accent); }
-  .skills-bg .section-line { background: rgba(255,255,255,0.1); }
-
+  /* ===== SKILLS ===== */
   .skills-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.08);
-    margin-top: 48px;
+    gap: 10px 20px;
   }
-
   .skill-cell {
-    background: var(--steel);
-    padding: 36px 32px;
-    transition: background 0.3s ease;
-    cursor: default;
+    font-family: 'DM Mono', monospace;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--hairline);
   }
 
-  .skill-cell:hover { background: rgba(200,69,26,0.15); }
-
-  .skill-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    color: #fff;
-    line-height: 1.3;
-  }
-
-  .skill-bar {
-    margin-top: 16px;
-    height: 2px;
-    background: rgba(255,255,255,0.1);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .skill-fill {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    background: var(--accent);
-    width: 0%;
-    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .skill-cell.visible .skill-fill { width: var(--w); }
-
-  /* ---- EDUCATION ---- */
-  .edu-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  .edu-card {
-    border: 1px solid var(--rule);
-    padding: 40px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .edu-card.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .edu-card:hover {
-    box-shadow: 6px 6px 0 var(--accent);
-    transform: translate(-3px, -3px);
-  }
-
-  .edu-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 100%;
-    background: var(--accent);
-  }
-
-  .edu-school {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--steel);
-    margin-bottom: 16px;
-  }
-
-  .edu-degree {
-    font-family: 'Fraunces', serif;
-    font-size: 18px;
-    line-height: 1.4;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-
-  .edu-year {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
-
-  /* ---- FOOTER ---- */
-  footer {
-    background: var(--ink);
-    padding: 60px;
+  /* ===== EXPERIENCE ===== */
+  .exp-item { margin-bottom: 34px; }
+  .exp-item:last-child { margin-bottom: 0; }
+  .exp-head {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-bottom: 4px;
   }
-
-  .footer-name {
+  .exp-title {
     font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 28px;
-    color: #fff;
-    letter-spacing: -1px;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
   }
+  .exp-dates {
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    color: var(--mist);
+  }
+  .exp-company {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--rust-dark);
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .exp-item ul { padding-left: 20px; }
+  .exp-item li { font-size: 15px; margin-bottom: 6px; color: var(--ink-soft); }
 
-  .footer-links {
+  /* ===== PROJECTS ===== */
+  .projects-intro {
+    font-size: 15px;
+    color: var(--slate);
+    max-width: 62ch;
+    margin-bottom: 32px;
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .project-card {
+    background: var(--paper-dim);
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--rust);
+    padding: 22px 24px;
     display: flex;
-    gap: 32px;
+    flex-direction: column;
   }
-
-  .footer-links a {
-    color: rgba(255,255,255,0.4);
-    text-decoration: none;
+  .project-card .p-context {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--mist);
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+  .project-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .project-card .p-tagline {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--rust-dark);
+    margin-bottom: 12px;
+  }
+  .project-card ul { padding-left: 18px; margin-bottom: 14px; flex-grow: 1; }
+  .project-card li { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 5px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+  .tag {
+    font-family: 'DM Mono', monospace;
     font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--hairline);
+    padding: 3px 9px;
   }
 
-  .footer-links a:hover { color: var(--accent); }
+  /* ===== EDUCATION ===== */
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .edu-card { border-left: 2px solid var(--rust); padding-left: 16px; }
+  .edu-school { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 15px; color: var(--ink); }
+  .edu-degree { font-size: 14px; color: var(--ink-soft); margin: 4px 0; }
+  .edu-year { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--mist); }
 
-  /* ---- ANIMATIONS ---- */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 40px 0 60px;
+    text-align: center;
   }
-
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+  footer .footer-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; color: var(--ink); margin-bottom: 12px; }
+  footer .footer-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    color: var(--rust-dark);
+    text-decoration: none;
+    margin: 0 10px;
   }
+  footer .footer-links a:hover { text-decoration: underline; }
 
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* ---- RESPONSIVE ---- */
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-left { padding: 60px 32px; min-height: 60vh; }
-    .hero-right { padding: 48px 32px; }
-    .exp-item { grid-template-columns: 1fr; gap: 16px; }
-    .skills-grid { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 700px) {
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .project-grid { grid-template-columns: 1fr; }
     .edu-grid { grid-template-columns: 1fr; }
-    .section { padding-left: 32px; padding-right: 32px; }
-    footer { flex-direction: column; gap: 24px; text-align: center; }
-    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .exp-head { flex-direction: column; }
   }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <div class="eyebrow">Available for opportunities</div>
-    <h1 class="hero-name">Larry<span>Sepulveda</span></h1>
-    <p class="hero-title">Systems Administrator | IAM &amp; Cloud Security</p>
-    <div class="hero-contact">
-      <a href="mailto:larry_Sepulveda@pm.me">larry_Sepulveda@pm.me</a>
-      <a href="https://www.linkedin.com/in/larrysepulveda1990" target="_blank">linkedin.com/in/larrysepulveda1990</a>
+<div class="hero">
+  <div class="wrap hero-inner">
+    <span class="label">SYSTEMS ADMINISTRATION / AZURE / IDENTITY</span>
+    <h1>Larry Sepulveda</h1>
+    <div class="role">System Administrator — Upland, California</div>
+    <p class="summary">Experienced IT professional with a strong background in systems administration, technical support, and IT operations — skilled in Active Directory, PowerShell scripting, and virtualized environments across Azure, VMware, and Nutanix AHV.</p>
+    <div class="hero-links">
+      <a href="mailto:larry_Sepulveda@pm.me">Email</a>
+      <a href="http://www.linkedin.com/in/larrysepulveda1990" target="_blank">LinkedIn</a>
     </div>
-  </div>
-  <div class="hero-right">
-    <div class="summary-label">// Profile</div>
-    <p class="summary-text">Systems Administrator with 10 years of IT experience spanning identity and access management, cloud security, and enterprise infrastructure. Manages Azure EntraID, Okta SSO, and Intune in a regulated financial services environment, with direct responsibility for vulnerability management (Qualys VMDR) and cloud threat monitoring (Microsoft Defender); previously administered role-based access control (RBAC) for a 50,000-user Epic EHR deployment in healthcare. Combines hands-on IAM/security administration with an MBA and formal cybersecurity education (AS in Cybersecurity).</p>
-    <div class="location-tag">Upland, California</div>
-  </div>
-</section>
-
-<!-- SKILLS TICKER -->
-<div class="ticker-wrap" aria-hidden="true">
-  <div class="ticker-track">
-    <span class="ticker-item">Identity &amp; Access Management</span>
-    <span class="ticker-item">RBAC</span>
-    <span class="ticker-item">Qualys VMDR</span>
-    <span class="ticker-item">Microsoft Defender for Cloud</span>
-    <span class="ticker-item">Azure EntraID</span>
-    <span class="ticker-item">Okta SSO</span>
-    <span class="ticker-item">MFA</span>
-    <span class="ticker-item">Phishing Simulation</span>
-    <span class="ticker-item">Intune &amp; Office 365</span>
-    <span class="ticker-item">Azure &amp; VMware</span>
-    <span class="ticker-item">Active Directory</span>
-    <span class="ticker-item">PowerShell Automation</span>
-    <span class="ticker-item">HIPAA Compliance</span>
-    <!-- duplicate for seamless loop -->
-    <span class="ticker-item">Identity &amp; Access Management</span>
-    <span class="ticker-item">RBAC</span>
-    <span class="ticker-item">Qualys VMDR</span>
-    <span class="ticker-item">Microsoft Defender for Cloud</span>
-    <span class="ticker-item">Azure EntraID</span>
-    <span class="ticker-item">Okta SSO</span>
-    <span class="ticker-item">MFA</span>
-    <span class="ticker-item">Phishing Simulation</span>
-    <span class="ticker-item">Intune &amp; Office 365</span>
-    <span class="ticker-item">Azure &amp; VMware</span>
-    <span class="ticker-item">Active Directory</span>
-    <span class="ticker-item">PowerShell Automation</span>
-    <span class="ticker-item">HIPAA Compliance</span>
   </div>
 </div>
 
-<!-- EXPERIENCE -->
-<div class="exp-section">
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-num">01</div>
-        <h2 class="section-title">Experience</h2>
-      </div>
-      <div class="section-line"></div>
-    </div>
+<div class="wrap">
 
-    <div class="exp-item">
-      <div class="exp-meta">
-        <div class="exp-company">Genesis Capital LLC</div>
-        <div class="exp-period">May 2023 — Present</div>
-      </div>
-      <div>
-        <div class="exp-role">System Administrator</div>
-        <ul class="exp-bullets">
-          <li>Administer Azure EntraID for user/group management, access policies, and application integrations, and oversee Okta as Identity Provider for user provisioning and Single Sign-On (SSO) across the organization.</li>
-          <li>Manage enterprise vulnerability management program using Qualys VMDR, including scanning, risk prioritization, and remediation tracking across servers and endpoints.</li>
-          <li>Administer Microsoft Defender for Cloud, monitoring security alerts and leading investigation and response for identified threats.</li>
-          <li>Run phishing simulation campaigns for end users to strengthen security awareness and reduce organizational risk.</li>
-          <li>Deploy and maintain Microsoft Intune for device and application management, and administer Office 365 licensing and account lifecycle for all end users.</li>
-          <li>Manage virtual machine environments across Azure and VMware, ensuring platform stability, scalability, and disaster-recovery-ready backups.</li>
-          <li>Provide day-to-day technical support and troubleshooting for hardware, software, and network/connectivity issues across the organization.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-meta">
-        <div class="exp-company">Genesis Capital LLC</div>
-        <div class="exp-period">Nov 2022 — May 2023</div>
-      </div>
-      <div>
-        <div class="exp-role">Sr. Desktop Support Specialist</div>
-        <ul class="exp-bullets">
-          <li>Provided technical escalation support for the Desktop Support team and documented technical processes to standardize operations.</li>
-          <li>Assisted in planning and implementation of hardware and software upgrades across the organization.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-meta">
-        <div class="exp-company">Prime Healthcare</div>
-        <div class="exp-period">Apr 2021 — Nov 2022</div>
-      </div>
-      <div>
-        <div class="exp-role">EHR Application Analyst</div>
-        <ul class="exp-bullets">
-          <li>Created and managed role-based access control (RBAC) for the Epic EHR system serving over 50,000 users, directly supporting HIPAA compliance requirements.</li>
-          <li>Conducted regular access reviews and audits of Epic EHR user permissions to identify and remediate inappropriate access.</li>
-          <li>Troubleshot complex end-user access issues, collaborating with cross-functional clinical and IT teams to resolve them.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-meta">
-        <div class="exp-company">Prime Healthcare</div>
-        <div class="exp-period">Aug 2019 — Apr 2021</div>
-      </div>
-      <div>
-        <div class="exp-role">Desktop Support Lead</div>
-        <ul class="exp-bullets">
-          <li>Led a team of desktop support technicians across multiple corporate locations, supporting over 900 users.</li>
-          <li>Maintained and patched Windows servers, managed asset procurement, and supported VIP executives.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-meta">
-        <div class="exp-company">Prime Healthcare</div>
-        <div class="exp-period">Aug 2017 — Aug 2019</div>
-      </div>
-      <div>
-        <div class="exp-role">Sr. IT Technician</div>
-        <ul class="exp-bullets">
-          <li>Provisioned and managed user accounts in Office 365 and Active Directory, and supported executive administration with advanced hardware/software troubleshooting.</li>
-          <li>Supported video and audio conferencing platforms including Webex, Teams, and Zoom.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-meta">
-        <div class="exp-company">Prime Healthcare</div>
-        <div class="exp-period">Jul 2015 — Aug 2017</div>
-      </div>
-      <div>
-        <div class="exp-role">Desktop Support Technician</div>
-        <ul class="exp-bullets">
-          <li>Served as first point of contact for IT issues including hardware, software, and network troubleshooting.</li>
-          <li>Installed and configured Windows, Mac, and mobile devices for corporate users.</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- SKILLS -->
-<div class="skills-bg">
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-num">02</div>
-        <h2 class="section-title">Skills</h2>
-      </div>
-      <div class="section-line"></div>
-    </div>
-
+  <section id="skills">
+    <h2 class="section-title">Top Skills <span class="label">/ 01</span></h2>
     <div class="skills-grid">
-      <div class="skill-cell" style="--w: 95%">
-        <div class="skill-name">Identity &amp; Access Management (IAM)</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 92%">
-        <div class="skill-name">Role-Based Access Control (RBAC)</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 90%">
-        <div class="skill-name">Vulnerability Management (Qualys VMDR)</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 88%">
-        <div class="skill-name">Microsoft Defender for Cloud</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 92%">
-        <div class="skill-name">Azure EntraID Administration</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 90%">
-        <div class="skill-name">Okta Administration &amp; SSO</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 88%">
-        <div class="skill-name">Multi-Factor Authentication (MFA)</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 85%">
-        <div class="skill-name">Phishing Simulation &amp; Security Awareness</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 90%">
-        <div class="skill-name">Microsoft Intune &amp; Office 365</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 88%">
-        <div class="skill-name">Azure &amp; VMware Administration</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 90%">
-        <div class="skill-name">Active Directory Management</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 85%">
-        <div class="skill-name">PowerShell Scripting &amp; Automation</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 88%">
-        <div class="skill-name">Access Auditing &amp; Compliance (HIPAA)</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 85%">
-        <div class="skill-name">IT Infrastructure Monitoring</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
-      <div class="skill-cell" style="--w: 90%">
-        <div class="skill-name">Troubleshooting &amp; Technical Support</div>
-        <div class="skill-bar"><div class="skill-fill"></div></div>
-      </div>
+      <div class="skill-cell">Systems Administration</div>
+      <div class="skill-cell">Active Directory Management</div>
+      <div class="skill-cell">Azure Entra ID Administration</div>
+      <div class="skill-cell">Okta Administration</div>
+      <div class="skill-cell">PowerShell Scripting &amp; Automation</div>
+      <div class="skill-cell">Azure, VMware &amp; Nutanix AHV</div>
+      <div class="skill-cell">Office 365 &amp; Intune Management</div>
+      <div class="skill-cell">Python &amp; Microsoft Graph API</div>
+      <div class="skill-cell">IT Infrastructure Monitoring</div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- EDUCATION -->
-<div>
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-num">03</div>
-        <h2 class="section-title">Education</h2>
+  <section id="experience">
+    <h2 class="section-title">Experience <span class="label">/ 02</span></h2>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <span class="exp-title">System Administrator</span>
+        <span class="exp-dates">May 2023 – Present</span>
       </div>
-      <div class="section-line"></div>
+      <div class="exp-company">Genesis Capital LLC</div>
+      <ul>
+        <li>Provide day-to-day technical support for end-users, including troubleshooting hardware, software, and network connectivity issues.</li>
+        <li>Administer Office 365, Intune, and Azure Entra ID for user management, licensing, access policies, and application integrations.</li>
+        <li>Manage virtual machine environments across Azure, VMware, and Nutanix AHV, ensuring stability and scalability.</li>
+        <li>Oversee Okta Identity Provider for user provisioning and SSO configurations.</li>
+        <li>Maintain backup solutions to ensure data recovery and business continuity.</li>
+      </ul>
     </div>
 
+    <div class="exp-item">
+      <div class="exp-head">
+        <span class="exp-title">Sr. Desktop Support Specialist</span>
+        <span class="exp-dates">Nov 2022 – May 2023</span>
+      </div>
+      <div class="exp-company">Genesis Capital LLC</div>
+      <ul>
+        <li>Provided technical escalation support for the Desktop Support team and documented processes to standardize operations.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <span class="exp-title">EHR Application Analyst</span>
+        <span class="exp-dates">Apr 2021 – Nov 2022</span>
+      </div>
+      <div class="exp-company">Prime Healthcare</div>
+      <ul>
+        <li>Created and managed role-based access for the Epic EHR system serving over 50,000 users, including reporting and auditing of user access.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <span class="exp-title">Desktop Support Lead</span>
+        <span class="exp-dates">Aug 2019 – Apr 2021</span>
+      </div>
+      <div class="exp-company">Prime Healthcare</div>
+      <ul>
+        <li>Led a team of desktop support technicians across multiple corporate locations with over 900 users; managed patching and asset procurement.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 class="section-title">Projects <span class="label">/ 03</span></h2>
+    <p class="projects-intro">Infrastructure work completed as System Administrator at Genesis Capital LLC.</p>
+    <div class="project-grid">
+
+      <div class="project-card">
+        <div class="p-context">GENESIS CAPITAL LLC</div>
+        <h3>On-Prem to Cloud File Share Migration</h3>
+        <div class="p-tagline">Migrated legacy file storage to Azure Files.</div>
+        <ul>
+          <li>Planned and executed migration of a Windows Server local file share to Azure Files.</li>
+          <li>Preserved folder structure, NTFS permissions, and access controls during cutover.</li>
+          <li>Reduced on-prem storage/backup overhead and improved remote accessibility.</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Azure</span><span class="tag">Azure Files</span><span class="tag">Windows Server</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="p-context">GENESIS CAPITAL LLC</div>
+        <h3>Endpoint Management Rollout — NinjaOne</h3>
+        <div class="p-tagline">Stood up NinjaOne as the org's patching and asset platform.</div>
+        <ul>
+          <li>Onboarded and configured NinjaOne from scratch as the RMM/patch management solution.</li>
+          <li>Established asset inventory tracking and automated patch deployment policies.</li>
+          <li>Improved visibility into device compliance and reduced manual patching effort.</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">NinjaOne</span><span class="tag">RMM</span><span class="tag">Patch Mgmt</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="p-context">GENESIS CAPITAL LLC</div>
+        <h3>VMware to Nutanix AHV Migration</h3>
+        <div class="p-tagline">Deployed a new hypervisor environment and migrated critical VMs.</div>
+        <ul>
+          <li>Deployed and configured a Nutanix AHV cluster.</li>
+          <li>Migrated all business-critical VMs from VMware with minimal downtime.</li>
+          <li>Consolidated virtualization onto a single, more cost-effective platform.</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Nutanix AHV</span><span class="tag">VMware</span><span class="tag">Virtualization</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="p-context">GENESIS CAPITAL LLC</div>
+        <h3>Network Drive to OneDrive Migration</h3>
+        <div class="p-tagline">Moved end users onto OneDrive for Business.</div>
+        <ul>
+          <li>Planned and executed user-by-user migration of personal drive data to OneDrive.</li>
+          <li>Coordinated with end users to minimize disruption and data loss risk.</li>
+          <li>Enabled cloud-based access, sync, and built-in redundancy for personal files.</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">OneDrive</span><span class="tag">Microsoft 365</span><span class="tag">Migration</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="education">
+    <h2 class="section-title">Education <span class="label">/ 04</span></h2>
     <div class="edu-grid">
       <div class="edu-card">
         <div class="edu-school">University of Phoenix</div>
@@ -789,48 +405,32 @@
       </div>
       <div class="edu-card">
         <div class="edu-school">University of Phoenix</div>
-        <div class="edu-degree">Bachelor of Science in Information Technology</div>
+        <div class="edu-degree">B.S. in Information Technology</div>
         <div class="edu-year">2021</div>
       </div>
       <div class="edu-card">
         <div class="edu-school">Chaffey College</div>
-        <div class="edu-degree">Associate of Science in Cybersecurity</div>
+        <div class="edu-degree">A.S. in Cybersecurity</div>
         <div class="edu-year">2021</div>
       </div>
       <div class="edu-card">
         <div class="edu-school">Chaffey College</div>
-        <div class="edu-degree">Associate of Science in Computer and Information Sciences</div>
+        <div class="edu-degree">A.S. in Computer and Information Sciences</div>
         <div class="edu-year">2019</div>
       </div>
     </div>
-  </div>
+  </section>
+
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-name">Larry Sepulveda</div>
   <div class="footer-links">
     <a href="mailto:larry_Sepulveda@pm.me">Email</a>
-    <a href="https://www.linkedin.com/in/larrysepulveda1990" target="_blank">LinkedIn</a>
+    <a href="http://www.linkedin.com/in/larrysepulveda1990" target="_blank">LinkedIn</a>
     <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to Top ↑</a>
   </div>
 </footer>
-
-<script>
-  // Intersection Observer for scroll animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        // Stagger children if needed
-      }
-    });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('.exp-item, .edu-card, .skill-cell').forEach(el => {
-    observer.observe(el);
-  });
-</script>
 
 </body>
 </html>
